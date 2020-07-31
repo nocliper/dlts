@@ -95,6 +95,6 @@ def find_min(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_e):
     print(t)
 
     from IPython.display import display, Math
-    display(Math(r'$$E_C - E_t = ({} \pm {})eV$$'.format(round(popt[0]*(8.617*10**-5),3),round(Error,3))))
+    display(Math(r'$$E_t - E_V = ({} \pm {})eV$$'.format(round(popt[0]*(8.617*10**-5),3),round(Error,3))))
     display(Math(r'$$N_t = %.2E cm^2$$'%N_t))
     display(Math(r'$$\sigma_n = %.2E cm^2$$'%(np.exp(popt[1])/A_e)))
