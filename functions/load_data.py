@@ -17,4 +17,14 @@ def load_data(path, dt = 150):
         Time.append(dt*(i+2)/1000) # s
     Time = np.asarray(Time)
 
-    return np.array(T), np.array(Time), np.array(C)
+    C = np.asarray(C)
+    ## Sorting
+
+    T = T.tolist()
+    C = C.tolist()
+
+    L = sorted(zip(T,C))
+
+    new_T, new_C = zip(*L)
+
+    return np.array(new_T), np.array(Time), np.array(new_C)

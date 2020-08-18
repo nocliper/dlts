@@ -23,7 +23,7 @@ def find_min(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_e):
     Sx          = []
 
     for i in range(n_windows-1):
-        loc_min = argrelextrema(DLTS[i][start:stop], np.less, order = 20)[0]
+        loc_min = argrelextrema(DLTS[i][start:stop], np.less, order = 25)[0]
         if not loc_min:
             loc_min = 0
         else:

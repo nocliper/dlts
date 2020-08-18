@@ -10,20 +10,23 @@ def find_max(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_h):
     start = 0
     stop  = 0
 
+    v_start = 5
+    v_stop  = 5
     for i in range(len(T)):
-
-        if T_start >= T[i]:
+        if (T[i] - T_start)**2 <= v_start:
+            v_start = (T[i] - T_start)**2
             start = i
-        elif T_stop >= T[i]:
+        if (T[i] - T_stop)**2 <= v_stop:
+            v_stop = (T[i] - T_stop)**2
             stop = i
 
-    #print('start=',T[start])
-    #print('stop=',T[stop])
+    print(start, stop)
+    print('start=',T[start])
+    print('stop=',T[stop])
     from scipy.signal import argrelextrema
 
     Temperature = []
     Sx          = []
-
 
     for i in range(n_windows-1):
         loc_max = argrelextrema(DLTS[i][start:stop], np.greater, order = 25)[0]
