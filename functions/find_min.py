@@ -90,8 +90,8 @@ def find_min(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_e):
     plt.tight_layout()
 
     from tabulate import tabulate
-    Table = np.array([Tx, Sx])
-    t = tabulate(Table.T, headers=['1000/T, K', 'e/T^2, s-1*K-2'], tablefmt='orgtbl')
+    Table = np.array([1000/Tx, Sx])
+    t = tabulate(Table.T, headers=['1000/T, K-1', 'e/T^2, s-1*K-2'], tablefmt='orgtbl')
     print(t)
 
     from IPython.display import display, Math
