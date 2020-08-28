@@ -20,8 +20,8 @@ def dlts_plot(T, Time, C, T1, T2, n_windows, ax):
     DLTS = np.asarray(DLTS)
 
     for i in range(0,n_windows-1):
-
-        ax.plot(T,DLTS[i], label = r'$\tau = %.1f s$'%(Time[T1[i]]-Time[T2[i]]))
+        tau = (Time[T2[i]]-Time[T1[i]])/np.log(Time[T2[i]]/Time[T1[i]])
+        ax.plot(T,DLTS[i], label = r'$\tau = %.3f$ s'%(tau))
 
     ax.legend()
     ax.grid(True,ls="-")

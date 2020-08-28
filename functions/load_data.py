@@ -11,7 +11,7 @@ def load_data(path, dt = 150):
     C      = []
 
     for i in range(0,len(T)):
-        C.append(csv[i,2:-2]) # nF
+        C.append(csv[i,3:-3]) # nF
 
     for i in range(len(C[0])):
         Time.append(dt*(i+2)/1000) # s
