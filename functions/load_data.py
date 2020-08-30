@@ -15,7 +15,7 @@ def load_data(path, dt = 150):
 
 
     for i in range(len(C[0])):
-        Time.append(dt*(i+2)/1000) # s
+        Time.append(dt*(i+1)/1000) # s
     Time = np.asarray(Time)
 
     C = np.asarray(C)

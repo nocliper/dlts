@@ -34,12 +34,11 @@ def find_max(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_h):
             loc_max = 0
         else:
             Temperature.append(T[start:stop][loc_max[0]])
-            temp = Time[T2[i]]-Time[T1[i]]
+            temp = (Time[T2[i]]-Time[T1[i]])/(np.log(Time[T2[i]]/Time[T1[i]]))
             Sx.append(temp)
 
     Sx  = np.array(Sx)
     Tx  = np.array(Temperature)
-    Sx  = Sx/np.log(X) #X = tau2/tau1
     Sx  = Sx**(-1)*Tx**(-2)
 
     fig, axs = plt.subplots(1, 2)

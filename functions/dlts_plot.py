@@ -13,9 +13,10 @@ def dlts_plot(T, Time, C, T1, T2, n_windows, ax, Smooth):
 
     for j in range(0,n_windows-1):
         DLTSx = []
-        for i in range(len(T)):
+        for i in range(0, len(T)):
             x = (C[i][T2[j]] - C[i][T1[j]])/C[i][-1]
             DLTSx.append(x)
+
         if Smooth == 1:
             DLTS.append(DLTSx)
         else:
