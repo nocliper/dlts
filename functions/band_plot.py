@@ -30,14 +30,15 @@ def band_plot(Eg, Ts, Ns, Es, size = 12, thick = 0.05, border = 0.085):
     ax.annotate(s='', xy=(0, -max(Ns)*0.05), xytext=(Eg, -max(Ns)*0.05), arrowprops=dict(arrowstyle='<|-|>'), size=size+6, color = 'k')
     ax.annotate(r'E$_G$ = '+str(Eg)+' eV', xy=(Eg/2, -max(Ns)*0.1), rotation = -180, size = size+4, ha = 'center')
 
-    ax.bar(Es, Ns, thick, color='red')
+    edgecolor = ''
+    ax.bar(Es, Ns, thick, edgecolor=edgecolor, color='red')
 
     # Scale
     scale = np.log10(Ns)+0.2
     scale = np.average(scale)//1
     print(scale)
 
-    ax.bar(Eg*1.05, 10**scale, thick, color = 'red')
+    ax.bar(Eg*1.05, 10**scale, thick, edgecolor=edgecolor,  color = 'red')
     ax.annotate('~ 10$^{%.0f}$ ${cm}^{-3}$'%(scale) , xy = (Eg*1.05, 10**scale+max(Ns)*0.05), rotation = 90, size = size, ha = 'center')
     ###
 

@@ -1,8 +1,9 @@
-def dlts_plot(T, Time, C, T1, T2, n_windows, ax):
+def dlts_plot(T, Time, C, T1, T2, n_windows, ax, Smooth):
 
     import matplotlib.pyplot as plt
     from matplotlib import cm
     import numpy as np
+    from scipy.signal import savgol_filter
 
     ax.set_ylabel('DLTS $arb. units$')
     ax.set_xlabel('Temperature $T, K$')
@@ -15,7 +16,10 @@ def dlts_plot(T, Time, C, T1, T2, n_windows, ax):
         for i in range(len(T)):
             x = (C[i][T2[j]] - C[i][T1[j]])/C[i][-1]
             DLTSx.append(x)
-        DLTS.append(DLTSx)
+        if Smooth == 1:
+            DLTS.append(DLTSx)
+        else:
+            DLTS.append(savgol_filter(DLTSx, Smooth, 1))
 
     DLTS = np.asarray(DLTS)
 
