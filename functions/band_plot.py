@@ -1,5 +1,5 @@
 
-def band_plot(Eg, Ts, Ns, Es, size = 12, thick = 0.05, border = 0.085):
+def band_plot(Eg, Ts, Ns, Es, size = 12, thick = 0.05, border = 0.085, c = 'blue'):
 
     import matplotlib.pyplot as plt
     import numpy as np
@@ -31,7 +31,7 @@ def band_plot(Eg, Ts, Ns, Es, size = 12, thick = 0.05, border = 0.085):
     ax.annotate(r'E$_G$ = '+str(Eg)+' eV', xy=(Eg/2, -max(Ns)*0.1), rotation = -180, size = size+4, ha = 'center')
 
     edgecolor = ''
-    ax.bar(Es, Ns, thick, edgecolor=edgecolor, color='red')
+    ax.bar(Es, Ns, thick, edgecolor=edgecolor, color=c)
 
     # Scale
     scale = np.log10(Ns)+0.2
