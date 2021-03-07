@@ -1,4 +1,4 @@
-def find_max(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_h):
+def find_max(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_h, ax1, ax2):
     '''Returns Ea and crossection of trap
     in temperature interval T_start -> T_stop'''
 
@@ -28,7 +28,7 @@ def find_max(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_h):
     Temperature = []
     Sx          = []
 
-    for i in range(n_windows-1):
+    for i in range(n_windows):
         loc_max = argrelextrema(DLTS[i][start:stop], np.greater, order = 25)[0]
         if not loc_max:
             loc_max = 0
@@ -41,23 +41,14 @@ def find_max(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_h):
     Tx  = np.array(Temperature)
     Sx  = Sx**(-1)*Tx**(-2)
 
-    fig, axs = plt.subplots(1, 2)
-    fig.set_size_inches(10,5)
-
-    axs[0].set_ylabel('DLTS $rel.$')
-    axs[0].set_xlabel('Temperature $T, K$')
-    axs[0].grid()
     #plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
-
-    for i in range(len(DLTS)):
-        axs[0].plot(T[start:stop],DLTS[i][start:stop])
 
     for i in range(len(DLTS)):
         loc_max = argrelextrema(DLTS[i][start:stop], np.greater, order = 25)[0]
         if not loc_max:
             loc_max = 0
         else:
-            axs[0].plot(T[start:stop][loc_max[0]],DLTS[i][start:stop][loc_max[0]],'x')
+            ax1.plot(T[start:stop][loc_max[0]],DLTS[i][start:stop][loc_max[0]],'x')
 
 
     imax = 0
@@ -81,12 +72,12 @@ def find_max(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_h):
 
     Error = popt[0]*(8.617*10**-5)*(-2)*(T_stop-T_start)/(1.15*T_average*(np.log10(T_start**2/(6*T_stop**2))))##Bridman p.22 eq. 1.15
 
-    axs[1].set_ylabel(r'$\ln{(\tau^{-1}\cdot T^{-2})}, s^{-1}\cdot K^{-2}$')
-    axs[1].set_xlabel(r'Temperature $1/T, K^{-1}$')
-    axs[1].plot(1/Tx,np.log(Sx),'o', label='Original Data')
-    axs[1].plot(1/Tx,popt[1]-popt[0]/Tx,'k-',label='Fitted line')
-    axs[1].legend()
-    axs[1].grid()
+    ax2.set_ylabel(r'$\ln{(\tau^{-1}\cdot T^{-2})}, s^{-1}\cdot K^{-2}$')
+    ax2.set_xlabel(r'Temperature $1/T, K^{-1}$')
+    ax2.plot(1/Tx,np.log(Sx),'o', label='Original Data')
+    ax2.plot(1/Tx,popt[1]-popt[0]/Tx,'k-',label='Fitted line')
+    ax2.legend()
+    ax2.grid()
 
     plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
     plt.tight_layout()

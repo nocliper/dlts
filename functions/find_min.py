@@ -1,4 +1,4 @@
-def find_min(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_e):
+def find_min(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_e, ax1, ax2):
     '''Returns Ea and crossection of trap
     in temperature interval T_start -> T_stop'''
 
@@ -22,7 +22,7 @@ def find_min(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_e):
     Temperature = []
     Sx          = []
 
-    for i in range(n_windows-1):
+    for i in range(n_windows):
         loc_min = argrelextrema(DLTS[i][start:stop], np.less, order = 25)[0]
         if not loc_min:
             loc_min = 0
@@ -35,22 +35,13 @@ def find_min(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_e):
     Tx  = np.array(Temperature)
     Sx  = Sx**(-1)*Tx**(-2)
 
-    fig, axs = plt.subplots(1, 2)
-    fig.set_size_inches(10,5)
-
-    axs[0].set_ylabel('DLTS $rel.$')
-    axs[0].set_xlabel('Temperature $T, K$')
-    axs[0].grid()
-
-    for i in range(len(DLTS)):
-        axs[0].plot(T[start:stop],DLTS[i][start:stop])
 
     for i in range(len(DLTS)):
         loc_min = argrelextrema(DLTS[i][start:stop], np.less, order = 20)[0]
         if not loc_min:
             loc_min = 0
         else:
-            axs[0].plot(T[start:stop][loc_min[0]],DLTS[i][start:stop][loc_min[0]],'x')
+            ax1.plot(T[start:stop][loc_min[0]],DLTS[i][start:stop][loc_min[0]],'x')
 
     imax = 0
     for i in range((len(DLTS))):
@@ -59,8 +50,6 @@ def find_min(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_e):
             imax = a
 
     N_t = 2*Doping*a*X**(X/(X-1))/(X-1)
-
-    axs[0].grid(True, ls="-")
 
 
     #plt.savefig('DLTS_spectra_scanned'+'.png', format='png', dpi=500)
@@ -78,12 +67,12 @@ def find_min(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_e):
 
     Error = popt[0]*(8.617*10**-5)*(-2)*(T_stop-T_start)/(1.15*T_average*(np.log10(T_start**2/(6*T_stop**2))))##Bridman p.22 eq. 1.15
 
-    axs[1].set_ylabel(r'$\ln{(\tau^{-1}\cdot T^{-2})}, s^{-1}\cdot K^{-2}$')
-    axs[1].set_xlabel(r'Temperature $1/T, K^{-1}$')
-    axs[1].plot(1/Tx,np.log(Sx),'o', label='Original Data')
-    axs[1].plot(1/Tx,popt[1]-popt[0]/Tx,'k-',label='Fitted line')
-    axs[1].legend()
-    axs[1].grid(True)
+    ax2.set_ylabel(r'$\ln{(\tau^{-1}\cdot T^{-2})}, s^{-1}\cdot K^{-2}$')
+    ax2.set_xlabel(r'Temperature $1/T, K^{-1}$')
+    ax2.plot(1/Tx,np.log(Sx),'o', label='Original Data')
+    ax2.plot(1/Tx,popt[1]-popt[0]/Tx,'k-',label='Fitted line')
+    ax2.legend()
+    ax2.grid(True)
 
     plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
     plt.tight_layout()

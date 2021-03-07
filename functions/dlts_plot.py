@@ -5,13 +5,13 @@ def dlts_plot(T, Time, C, T1, T2, n_windows, ax, Smooth):
     import numpy as np
     from scipy.signal import savgol_filter
 
-    ax.set_ylabel('DLTS $arb. units$')
+    ax.set_ylabel(r'$\Delta C/C_0$ $arb. units$')
     ax.set_xlabel('Temperature $T, K$')
-    plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+    ax.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 
     DLTS = []
 
-    for j in range(0,n_windows-1):
+    for j in range(n_windows):
         DLTSx = []
         for i in range(0, len(T)):
             x = (C[i][T2[j]] - C[i][T1[j]])/C[i][-1]
@@ -24,10 +24,11 @@ def dlts_plot(T, Time, C, T1, T2, n_windows, ax, Smooth):
 
     DLTS = np.asarray(DLTS)
 
-    for i in range(0,n_windows-1):
+    for i in range(n_windows):
         tau = (Time[T2[i]]-Time[T1[i]])/np.log(Time[T2[i]]/Time[T1[i]])
-        ax.plot(T,DLTS[i], label = r'$\tau = %.3f$ s'%(tau))
+        ax.plot(T, DLTS[i], label = r'$\tau = %.3f$ s'%(tau))
 
     ax.legend()
     ax.grid(True,ls="-")
+    plt.tight_layout()
     return DLTS

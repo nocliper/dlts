@@ -23,7 +23,7 @@ def time_windows(n_windows, X, Time, C, ax):
     T1 = []
     T2 = []
 
-    for j in range(1, n_windows + 1):
+    for j in range(n_windows):
         ax.axvline(x = Time[j*1], color=str(j/n_windows), linestyle =':')
         T1.append(j)
         for i in range(len(Time)):
