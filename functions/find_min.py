@@ -89,7 +89,6 @@ def find_min(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_h, a
 
     sigm, serr, spow = sci_notation(np.exp(popt[1])/A_h, np.exp(perr[1])/A_h)
 
-    from sci_notation import sci_notation
 
     step = (max(np.log(Sx)) - min(np.log(Sx)))*0.1
 

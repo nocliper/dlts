@@ -94,7 +94,6 @@ def find_max(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_e, a
 
     sigm, serr, spow = sci_notation(np.exp(popt[1])/A_e, np.exp(perr[1])/A_e)
 
-    from sci_notation import sci_notation
 
     step = (max(np.log(Sx)) - min(np.log(Sx)))*0.1
 
