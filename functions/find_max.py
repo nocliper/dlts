@@ -3,9 +3,10 @@ def find_max(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_e, a
     in temperature interval T_start -> T_stop'''
 
     import matplotlib.pyplot as plt
-    from matplotlib import cm
     import numpy as np
+    from matplotlib import cm
     from scipy.optimize import curve_fit
+    from pandas import DataFrame
 
     c = cm.gnuplot(np.linspace(0, 0.9, n_windows))
 
@@ -80,21 +81,34 @@ def find_max(T_start,T_stop, DLTS, T, Time, T1, T2, X, n_windows, Doping, A_e, a
     ax2.grid()
 
     ax2.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
-    plt.tight_layout()
+    #plt.tight_layout()
 
-    from tabulate import tabulate
-    Table = np.array([1000/Tx, Sx])
-    t = tabulate(Table.T, headers=['1000/T, K-1', 'e/T^2, s-1*K-2'])
-    print(t)
 
     def sci_notation(a, b):
-        a_pow = np.ceil(np.log10(a))-1
-        b_pow = np.ceil(np.log10(b))-1
-        return a/10**a_pow, b/10**a_pow, a_pow
+        a_pow = int(np.floor(np.log10(a)))
+
+        if b == np.inf:
+            return a/10**a_pow, 0, a_pow
+        else:
+            return a/10**a_pow, b/10**a_pow, a_pow
 
     sigm, serr, spow = sci_notation(np.exp(popt[1])/A_e, np.exp(perr[1])/A_e)
 
-    from IPython.display import display, Math
-    display(Math(r'$$E_C - E_t = ({} \pm {}) eV$$'.format(round(popt[0]*(8.617*10**-5),3), round(perr[0]*(8.617*10**-5),3))))
-    display(Math(r'$$N_t = %.2E cm^2$$'%N_t))
-    display(Math(r'$$\sigma_n = (%.3f \pm %.3f)\cdot {10}^{%.0f} {cm}^2$$'%(sigm, serr, spow)))
+    from sci_notation import sci_notation
+
+    step = (max(np.log(Sx)) - min(np.log(Sx)))*0.1
+
+    ax2.annotate(r'$E_C - E_t = ({} \pm {}) eV$'.format(round(popt[0]*(8.617*10**-5),3), round(perr[0]*(8.617*10**-5),3)),
+                xy = (min(1/Tx), min(np.log(Sx))*0.990 + 2*step), ha = 'left', backgroundcolor = 'white')
+    ax2.annotate(r'$N_t = %.2E cm^2$'%N_t,
+                xy = (min(1/Tx), min(np.log(Sx))*0.990 + 1*step), ha = 'left', backgroundcolor = 'white')
+    ax2.annotate(r'$\sigma_n = (%.3f \pm %.3f)\cdot {10}^{%.0f} {cm}^2$'%(sigm, serr, spow),
+                xy = (min(1/Tx), min(np.log(Sx))*0.990 + 0*step), ha = 'left', backgroundcolor = 'white')
+
+
+    plt.pause(0.1)
+
+    data = np.array([1000/Tx, Sx]).T
+    df = DataFrame(data, columns=['1000/T (K-1)', 'e/T^2 (s-1*K-2)'])
+    df['e/T^2 (s-1*K-2)'] = df['e/T^2 (s-1*K-2)'].apply(lambda x: '%.3e' % x)
+    display(df)

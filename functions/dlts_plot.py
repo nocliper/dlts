@@ -1,4 +1,4 @@
-def dlts_plot(T, Time, C, T1, T2, n_windows, ax, Smooth):
+def dlts_plot(T, Time, C, T1, T2, n_windows, ax, Smooth, Bounds):
 
     import matplotlib.pyplot as plt
     from matplotlib import cm
@@ -8,6 +8,8 @@ def dlts_plot(T, Time, C, T1, T2, n_windows, ax, Smooth):
     ax.set_ylabel(r'$\Delta C/C_0$ $arb. units$')
     ax.set_xlabel('Temperature $T, K$')
     ax.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+
+    ax.axvspan(Bounds[0], Bounds[1], alpha=0.1, color='red')
 
     DLTS = []
 
@@ -30,7 +32,9 @@ def dlts_plot(T, Time, C, T1, T2, n_windows, ax, Smooth):
         tau = (Time[T2[i]]-Time[T1[i]])/np.log(Time[T2[i]]/Time[T1[i]])
         ax.plot(T, DLTS[i], c = c[i], label = r'$\tau = %.3f$ s'%(tau))
 
-    ax.legend()
+    if n_windows <= 11:
+        ax.legend()
+
     ax.grid(True,ls="-")
     plt.tight_layout()
     return DLTS
